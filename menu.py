@@ -48,3 +48,15 @@ def paisesmenu():
     """
     print(menupai)
     return input("Ingrese una opcion: ")
+
+def artistasmenu():
+    menuart="""
+    ******Artistas*****
+    1.Añadir artista
+    2.Eliminar artista
+    3.Consultar artistas
+    4.Salir
+    """
+    print(menuart)
+    return input("Ingrese una opcion: ")
+
