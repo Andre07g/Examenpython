@@ -1,7 +1,7 @@
 import json
 import time
 import os
-from menu import generosmenu, paisesmenu
+from menu import generosmenu, paisesmenu, artistasmenu, limpiar
 global generos, artistas, paises
 def leercodigos():
     with open("codigos.json","r") as file:
@@ -60,18 +60,32 @@ def consular_genero():
             existe=True
             print(f"El codigo del genero es {gen[nombrege]}")
     if existe==False: print("El genero que ingresò no existe")
+    input("Presione cualquier letra para volver")
         
 def generosmain():
     while True:
         op=generosmenu()
         match op:
-            case "1":añadir_genero()
-            case "2":eliminar_genero()
-            case "3":consular_genero()
+            case "1":
+                añadir_genero()
+                time.sleep(1)
+                limpiar()
+            case "2":
+                eliminar_genero()
+                time.sleep(1)
+                limpiar()
+            case "3":
+                consular_genero()
+                time.sleep(1)
+                limpiar()
             case "4":
                 print("Volviendo")
+                time.sleep(1)
+                limpiar()
                 break
-            case _: print("Ingrese una opcion valida")
+            case _: 
+                limpiar()
+                print("Ingrese una opcion valida")
 
 ######Funciones paises########
 
@@ -125,18 +139,32 @@ def consultar_pais():
             for dato in pa[nombrepa]:
                 print(dato,end="           ")
     if existe==False: print("El genero que ingresò no existe")
+    print("Presione cualquier tecla para volver")
 
 def paisesmain():
     while True:
         op=paisesmenu()
         match op:
-            case "1": añadir_paises()
-            case "2": eliminar_paises()
-            case "3": consultar_pais()
+            case "1": 
+                añadir_paises()
+                time.sleep(1)
+                limpiar()
+            case "2": 
+                eliminar_paises()
+                time.sleep(1)
+                limpiar()
+            case "3": 
+                consultar_pais()
+                time.sleep(1)
+                limpiar()
             case "4":
                 print("Saliendo")
+                time.sleep(1)
+                limpiar()
                 break
-            case _: print("Ingrese una opcion valida")
+            case _: 
+                limpiar()
+                print("Ingrese una opcion valida")
 #####Funciones artistas##########
 
 def leerartistas():
@@ -170,6 +198,9 @@ def añadir_artista():
                     break
                 except: print("Ingrese un numero valido")
             while True:
+                for genero in generos:
+                    for clave, valor in genero.items():
+                        print(f"{clave}->{valor}")
                 generoexiste=False
                 op=input("Ingrese 1 para añadir genero, cualquie otra tecla para dejar de añadir: ")
                 if op=="1":
@@ -209,3 +240,115 @@ def añadir_artista():
     else: print("El artista ya existe")
 
 
+def editar_artista():
+    existe=False
+    listageneros=[]
+    nombreart=input("Ingrese nombre del artista: ")
+    for artista in artistas:
+        if nombreart in artista["Nombre del artista"]:
+            existe=True
+            indice=artistas.index(artista)
+    if existe==False: print("El artista ingresado no existe")
+    else: 
+            paisor=input("Ingrese el pais de origen: ")
+        
+            añocomienzo=input("Ingrese año en que comenzò: ")
+            añoactivo=input("Ingrese año en que retomaron: ")
+            ultimoaño=input("Ingrese ultimo año de actividad: ")
+            while True:
+                try:
+                    primerdisco=int(input("Ingrese el año de lanzamiento de su primer disco: "))
+                    break
+                except: print("Ingrese un numero valido")
+            while True:
+                generoexiste=False
+                op=input("Ingrese 1 para añadir genero, cualquie otra tecla para dejar de añadir: ")
+                if op=="1":
+                    genero=input("Ingrese el genero(s) musicales: ").capitalize()
+                    for tema in generos:
+                        for nombr, codigo in tema.items():
+                            if nombr==genero:
+                                cod=codigo
+                                generoexiste=True
+                                listageneros.append({genero:cod})
+                                print("Genero añadido correctamente")
+                    if generoexiste==False: print("El genero ingresado no existe")
+                else: 
+                    print("Generos añadidos")
+                    break        
+            unida=input("Ingrese unidades certificadas totales: ")
+            ventasrec=input("Ingrese ventas reclamadas: ")
+            while True:
+                actividad=input("Ingrese 1 si esta actvo, 2 sino: ")
+                if actividad=="1": 
+                    activo=True
+                    break
+                elif actividad=="2":
+                    activo=False
+                    break
+                else:print("Ingrese una opcion valida")
+            artistas[indice]={"Nombre del artista":nombreart,
+                            "Pais de origen":paisor,
+                            "Anios de actividad":(f"{añocomienzo}\\/u{añoactivo}-{ultimoaño}"),
+                            "Anio de lanzamiento primer disco":primerdisco,
+                            "Genero":listageneros,
+                            "Unidades Certificadas":unida,
+                            "Ventas Reclamadas":ventasrec
+                            }
+            escribirartistas()
+            print("Artista añadido correctamente")
+            
+def eliminar_artista():
+    existe=False
+    nombreart=input("Ingrese el nombre del artista: ")
+    for artista in artistas:
+        if nombreart in ["Nombre del artista"]:
+            existe=True
+            indice=artistas.index(artista)
+    if existe==True:
+        artistas.pop(indice)
+    else: print("El artista ingresado no existe")
+
+def artistas_main():
+    while True:
+        op=artistasmenu()
+        match op:
+            case "1": 
+                añadir_artista()
+                time.sleep(1)
+                limpiar()
+            case "2": 
+                editar_artista()
+                time.sleep(1)
+                limpiar()
+            case "3": 
+                eliminar_artista()
+                time.sleep(1)
+                limpiar()
+            case "4": 
+                consultar_artista()
+                time.sleep(1)
+                limpiar()
+            case "5":
+                print ("Saliendo")
+                time.sleep(1)
+                limpiar()
+                break
+            case _: 
+                limpiar()
+                print("Ingrese una opciòn valida")
+
+def consultar_artista():
+    existe=False
+    nombreart=input("Ingrese el nombre del artista: ")
+    for artista in artistas:
+        if nombreart in artista["Nombre del artista"]:
+            existe=True
+            indice=artistas.index(artista)
+    if existe==False: print("El artista ingresado no existe")
+    else:
+        for artista in artistas:
+            for clave, valor in artista.items():
+                print(f"{clave}->{valor}")
+    input("Presione cualquier tecla para volver")
+    

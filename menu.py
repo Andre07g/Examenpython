@@ -53,9 +53,10 @@ def artistasmenu():
     menuart="""
     ******Artistas*****
     1.Añadir artista
-    2.Eliminar artista
-    3.Consultar artistas
-    4.Salir
+    2.Editar artista
+    3.Eliminar artista
+    4.Consultar artistas
+    5.Salir
     """
     print(menuart)
     return input("Ingrese una opcion: ")
